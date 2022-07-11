@@ -17,7 +17,8 @@ public class App {
             System.out.print("명령) ");
             String cmd = sc.nextLine().trim();
 
-            switch(cmd) {
+            Rq rq = new Rq(cmd);
+            switch(rq.getPath()) {
                 case "종료":
                     break outer;
                 case "등록":
@@ -30,6 +31,31 @@ public class App {
                     WiseSaying wiseSaying = new WiseSaying(id, contents, author);
                     wiseSayings.add(wiseSaying);
                     System.out.printf("%d번 명언이 등록되었습니다.\n", id);
+                    break;
+                case "삭제":
+                    int paramId = rq.getIntParam("id",0);
+
+                    if(paramId == 0) {
+                        System.out.println("id를 입력해주세요.");
+                        continue;
+                    }
+
+                    WiseSaying wiseSaying__ = null;
+
+                    for(WiseSaying wiseSaying___ : wiseSayings) {
+                        if(wiseSaying___.id == paramId) {
+                            wiseSaying__ = wiseSaying___;
+                        }
+                    }
+
+                    if(wiseSaying__ == null) {
+                        System.out.printf("%d번 명언은 존재하지 않습니다..\n", paramId);
+                        continue;
+                    }
+
+                    wiseSayings.remove(wiseSaying__);
+
+                    System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
                     break;
                 case "목록":
                     System.out.println("번호 / 작가 / 명언");
